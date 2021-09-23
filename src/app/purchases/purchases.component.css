@@ -1,0 +1,23 @@
+.item {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+table {
+  margin-left: 1rem;
+  width: 100%;
+}
+
+.trash {
+  color: #757575;
+  cursor: pointer;
+}
+
+.trash:hover {
+  color: black;
+  cursor: pointer;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
