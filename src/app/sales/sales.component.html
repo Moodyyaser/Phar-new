@@ -1,104 +1,143 @@
-<mat-card style="margin: auto; margin-bottom: 2rem;">
-
+<mat-card style="margin: auto; margin-bottom: 2rem">
   <mat-form-field appearance="fill">
     <mat-label>اسم المصدر</mat-label>
     <select matNativeControl [value]="buyer_index" [(ngModel)]="buyer_index">
-      <option *ngFor="let i of company_buyers" value={{i}}>{{i}}</option>
+      <option *ngFor="let i of company_buyers" value="{{ i }}">{{ i }}</option>
     </select>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="item">
     <mat-label>تاريخ التصدير</mat-label>
-    <input matInput
+    <input
+      matInput
       [matDatepicker]="picker"
       [value]="date_index"
-      [(ngModel)]="date_index">
+      [(ngModel)]="date_index"
+    />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="item">
     <mat-label>رقم المصدر</mat-label>
-    <input matInput type="number" [(ngModel)]="load_number"
-      min="0"
-      step="1">
+    <input matInput type="number" [(ngModel)]="load_number" min="0" step="1" />
   </mat-form-field>
-  <button mat-raised-button color="accent" style="margin-left: 1rem;" (click)="load(load_number)">Load</button>
+  <button
+    mat-raised-button
+    color="accent"
+    style="margin-left: 1rem"
+    (click)="load(load_number)"
+  >
+    Load
+  </button>
 </mat-card>
 
 <!-- Elements Table -->
 <div>
-  <h2 style="margin-left: 1rem;">Total: {{getTotalCost() | currency}}</h2>
-  <h4 style="margin-left: 1rem;">Current buyer number: {{export_number}}</h4>
+  <h2 style="margin-left: 1rem">Total: {{ getTotalCost() | currency }}</h2>
+  <h4 style="margin-left: 1rem">Current buyer number: {{ export_number }}</h4>
 </div>
 
-  <button mat-raised-button color="accent" style="margin-left: 1rem;" (click)="save()">Save</button>
-  <button mat-raised-button
-          color="accent"
-          style="margin-left: 1rem; margin-right: 1rem; float: right;"
-          [matMenuTriggerFor]="element_menu">Add Medicine</button>
-  <mat-menu #element_menu="matMenu">
-    <button mat-menu-item *ngFor="let i of items_to_add" (click)="addElement(i)">{{i}}</button>
-  </mat-menu>
-  <p *ngIf="saved" style="color: red;" (click)="hide_saved()">Done</p>
-<table mat-table [dataSource]="sortedData" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
-
+<button
+  mat-raised-button
+  color="accent"
+  style="margin-left: 1rem"
+  (click)="save()"
+>
+  Save
+</button>
+<button
+  mat-raised-button
+  color="accent"
+  style="margin-left: 1rem; margin-right: 1rem; float: right"
+  [matMenuTriggerFor]="element_menu"
+>
+  Add Medicine
+</button>
+<mat-menu #element_menu="matMenu">
+  <button mat-menu-item *ngFor="let i of items_to_add" (click)="addElement(i)">
+    {{ i }}
+  </button>
+</mat-menu>
+<p *ngIf="saved" style="color: red" (click)="hide_saved()">Done</p>
+<table
+  mat-table
+  [dataSource]="sortedData"
+  matSort
+  (matSortChange)="sortData($event)"
+  class="mat-elevation-z8"
+>
   <!-- ID Column -->
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    <td mat-footer-cell *matFooterCellDef> Total </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    <td mat-footer-cell *matFooterCellDef>Total</td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
     <td mat-footer-cell *matFooterCellDef></td>
   </ng-container>
 
   <!-- Capsules in tablet Column -->
   <ng-container matColumnDef="capsulent">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Capsules in tablet </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+      Capsules in tablet
+    </th>
     <td mat-cell *matCellDef="let element">
-      <select [(ngModel)]="element.capsulent" value="{{element.capsulent}}" style="width: 64px;">
-        <option value="6" >6</option>
-        <option value="8" >8</option>
+      <select
+        [(ngModel)]="element.capsulent"
+        value="{{ element.capsulent }}"
+        style="width: 64px"
+      >
+        <option value="6">6</option>
+        <option value="8">8</option>
         <option value="10">10</option>
         <option value="12">12</option>
         <option value="15">15</option>
         <option value="20">20</option>
         <option value="30">30</option>
-      </select></td>
+      </select>
+    </td>
     <td mat-footer-cell *matFooterCellDef></td>
   </ng-container>
 
   <!-- Tablets Column -->
   <ng-container matColumnDef="tablets">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tablets </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tablets</th>
     <td mat-cell *matCellDef="let element">
       <input
         type="number"
         [(ngModel)]="element.tablets"
-        value="{{element.tablets}}"
-        style="width: 64px;"
+        value="{{ element.tablets }}"
+        style="width: 64px"
         placeholder="0"
-        min="0"> {{floor(element.tablets*element.capsulent)}} capsules</td>
+        min="0"
+      />
+      {{ floor(element.tablets * element.capsulent) }} capsules
+    </td>
     <td mat-footer-cell *matFooterCellDef></td>
   </ng-container>
 
   <!-- Price Column -->
   <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
-    <td mat-cell *matCellDef="let element">{{element.price}} $</td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+    <td mat-cell *matCellDef="let element">{{ element.price }} $</td>
     <td mat-footer-cell *matFooterCellDef></td>
   </ng-container>
 
   <!-- Total Column -->
   <ng-container matColumnDef="total">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-    <td mat-cell *matCellDef="let element"> {{string_format(element.price*element.tablets*element.capsulent) || 0}} $</td>
-    <td mat-footer-cell *matFooterCellDef>{{getTotalCost() | currency}}</td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+    <td mat-cell *matCellDef="let element">
+      {{
+        string_format(element.price * element.tablets * element.capsulent) || 0
+      }}
+      $
+    </td>
+    <td mat-footer-cell *matFooterCellDef>{{ getTotalCost() | currency }}</td>
   </ng-container>
 
   <!-- Delete Column -->
@@ -111,6 +150,6 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
 </table>

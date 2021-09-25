@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { PeriodicElement } from './elements.model';
-import { ELEMENT_DATA } from './elements.component'
+import { ELEMENT_DATA } from './elements.component';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,7 @@ import { ELEMENT_DATA } from './elements.component'
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const elements: PeriodicElement[] = ELEMENT_DATA;
-    return {elements};
+    return { elements };
   }
 
   // Overrides the genId method to ensure that a element always has an id.
@@ -18,6 +18,8 @@ export class InMemoryDataService implements InMemoryDbService {
   // if the ELEMENT_DATA array is not empty, the method below returns the highest
   // element id + 1.
   genId(ELEMENT_DATA: PeriodicElement[]): number {
-    return ELEMENT_DATA.length > 0 ? Math.max(...ELEMENT_DATA.map(element => element.id)) + 1 : 11;
+    return ELEMENT_DATA.length > 0
+      ? Math.max(...ELEMENT_DATA.map((element) => element.id)) + 1
+      : 11;
   }
 }
