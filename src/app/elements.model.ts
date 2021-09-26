@@ -12,4 +12,5 @@ export interface PharmaticElement {
   capsulent: number;
   tablets:   number;
   price:     number;
+  //بسهولة Shift+Alt أنا بحب أخليهم مترسسين عشان لو عاوز أغيرهم في نفس الوقت أدوس
 }

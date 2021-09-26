@@ -1,49 +1,59 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {MatTable} from '@angular/material/table';
+import { MatTable } from '@angular/material/table';
 import { PeriodicElement } from '../elements.model';
-import {Sort} from '@angular/material/sort';
+import { Sort } from '@angular/material/sort';
 
-import {TableService} from '../table.service';
+import { TableService } from '../table.service';
 
 @Component({
   selector: 'app-purchases',
   templateUrl: './purchases.component.html',
-  styleUrls: ['./purchases.component.css']
+  styleUrls: ['./purchases.component.css'],
 })
 export class PurchasesComponent implements OnInit {
-
   saved = false;
   import_number = 0;
   load_number = 0;
   table_length = 0;
   table_length_prev = this.table_length;
   constructor(private tableService: TableService) {
-    this.sortedData = this.Table_array.slice();}
+    this.sortedData = this.Table_array.slice();
+  }
 
   ngOnInit() {
     this.load(0);
   }
 
-  hide_saved() {this.saved = false;}
+  hide_saved() {
+    this.saved = false;
+  }
 
-  company_suppliers = ["Kuwait Co.", "Knoll"];
+  company_suppliers = ['Kuwait Co.', 'Knoll'];
 
   //Date format in Javascript is yyyy\dd\mm but will be displayed as mm/dd/yyyy
   //Highlighted date is today's date
   date_index: Date = new Date();
-  supplier_index = "";
+  supplier_index = '';
 
   //Table elements --------------------------------------------------------------------
   ELEMENT_DATA: PeriodicElement[] = [];
   Table_array = this.ELEMENT_DATA;
   sortedData: PeriodicElement[] = this.Table_array.slice();
 
-  displayedColumns = ['id', 'name', 'weight', 'amount', 'price', 'total', 'delete'];
+  displayedColumns = [
+    'id',
+    'name',
+    'weight',
+    'amount',
+    'price',
+    'total',
+    'delete',
+  ];
 
   @ViewChild(MatTable) table!: MatTable<any>;
 
   delete(id: PeriodicElement) {
-    if (confirm("Are you sure you wish to delete this?")) {
+    if (confirm('Are you sure you wish to delete this?')) {
       const index = this.Table_array.indexOf(id);
       this.table_length-=1;
       this.Table_array.splice(index, 1);
@@ -58,59 +68,83 @@ export class PurchasesComponent implements OnInit {
   }
 
   getTotalCost() {
-    return this.Table_array.map(t => (t.price*t.amount) || 0).reduce((acc, value) => acc + value, 0);
+    return this.Table_array.map((t) => t.price * t.amount || 0).reduce(
+      (acc, value) => acc + value,
+      0,
+    );
   }
 
   save() {
-    this.tableService.updateElements(this.Table_array[this.import_number])
+    this.tableService
+      .updateElements(this.Table_array[this.import_number])
       .subscribe(() => {
-          this.saved = true;
-          setTimeout(this.hide_saved, 5000);
-          //Save
-          const te = this.import_number.toString();
-          localStorage.setItem("buylength_"+te , this.table_length.toString());
-          localStorage.setItem("buydate_"+te   , this.date_index.toString());
-          localStorage.setItem("buycompany_"+te, this.supplier_index);
-          for (let i=0; i<this.table_length; i+=1) {
-            localStorage.setItem("buyname"  +i.toString()+"_"+te, this.Table_array[i].name);
-            localStorage.setItem("buyweight"+i.toString()+"_"+te, this.Table_array[i].weight.toString());
-            localStorage.setItem("buyamount"+i.toString()+"_"+te, (this.Table_array[i].amount || 0).toString());
-            localStorage.setItem("buyprice" +i.toString()+"_"+te, this.Table_array[i].price.toString());
-          }
+        this.saved = true;
+        setTimeout(this.hide_saved, 5000);
+        //Save
+        const te = this.import_number.toString();
+        localStorage.setItem('buylength_' + te, this.table_length.toString());
+        localStorage.setItem('buydate_' + te, this.date_index.toString());
+        localStorage.setItem('buycompany_' + te, this.supplier_index);
+        for (let i = 0; i < this.table_length; i += 1) {
+          localStorage.setItem(
+            'buyname' + i.toString() + '_' + te,
+            this.Table_array[i].name,
+          );
+          localStorage.setItem(
+            'buyweight' + i.toString() + '_' + te,
+            this.Table_array[i].weight.toString(),
+          );
+          localStorage.setItem(
+            'buyamount' + i.toString() + '_' + te,
+            (this.Table_array[i].amount || 0).toString(),
+          );
+          localStorage.setItem(
+            'buyprice' + i.toString() + '_' + te,
+            this.Table_array[i].price.toString(),
+          );
+        }
 
-          for (let i=this.table_length; i<this.table_length_prev; i+=1) {
-            localStorage.removeItem("buyname"  +i.toString()+"_"+te);
-            localStorage.removeItem("buyweight"+i.toString()+"_"+te);
-            localStorage.removeItem("buyamount"+i.toString()+"_"+te);
-            localStorage.removeItem("buyprice" +i.toString()+"_"+te);
-          }
-          this.table_length_prev = this.table_length;
-        });
+        for (let i = this.table_length; i < this.table_length_prev; i += 1) {
+          localStorage.removeItem('buyname' + i.toString() + '_' + te);
+          localStorage.removeItem('buyweight' + i.toString() + '_' + te);
+          localStorage.removeItem('buyamount' + i.toString() + '_' + te);
+          localStorage.removeItem('buyprice' + i.toString() + '_' + te);
+        }
+        this.table_length_prev = this.table_length;
+      });
   }
 
   //Load
   load(num: number) {
-    this.tableService.getElements()
-      .subscribe(() => {
-          const te = this.load_number.toString();
-          this.table_length=parseInt(localStorage.getItem("buylength_"+te) || "0");
-          this.date_index=new Date(localStorage.getItem("buydate_"+te) || "");
-          this.supplier_index=localStorage.getItem("buycompany_"+te) || this.company_suppliers[0];
-          this.Table_array = [];
-          for (let i=0; i<this.table_length; i+=1) {
-            this.Table_array.push({
-              id: i,
-              name:   localStorage.getItem("buyname"+i.toString()+"_"+te) || "",
-              weight: parseFloat(localStorage.getItem("buyweight"+i.toString()+"_"+te) || "0"),
-              amount: parseFloat(localStorage.getItem("buyamount"+i.toString()+"_"+te) || "0"),
-              price:  parseFloat(localStorage.getItem("buyprice" +i.toString()+"_"+te) || "0"),
-            })
-          }
-          this.table_length_prev = this.table_length;
-          this.sortedData = this.Table_array.slice();
-          this.import_number = this.load_number;
-          this.table.renderRows();
+    this.tableService.getElements().subscribe(() => {
+      const te = this.load_number.toString();
+      this.table_length = parseInt(
+        localStorage.getItem('buylength_' + te) || '0',
+      );
+      this.date_index = new Date(localStorage.getItem('buydate_' + te) || '');
+      this.supplier_index =
+        localStorage.getItem('buycompany_' + te) || this.company_suppliers[0];
+      this.Table_array = [];
+      for (let i = 0; i < this.table_length; i += 1) {
+        this.Table_array.push({
+          id: i,
+          name: localStorage.getItem('buyname' + i.toString() + '_' + te) || '',
+          weight: parseFloat(
+            localStorage.getItem('buyweight' + i.toString() + '_' + te) || '0',
+          ),
+          amount: parseFloat(
+            localStorage.getItem('buyamount' + i.toString() + '_' + te) || '0',
+          ),
+          price: parseFloat(
+            localStorage.getItem('buyprice' + i.toString() + '_' + te) || '0',
+          ),
         });
+      }
+      this.table_length_prev = this.table_length;
+      this.sortedData = this.Table_array.slice();
+      this.import_number = this.load_number;
+      this.table.renderRows();
+    });
   }
 
   //Sort
@@ -124,13 +158,20 @@ export class PurchasesComponent implements OnInit {
     this.sortedData = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'id': return compare(a.id, b.id, isAsc);
-        case 'weight': return compare(a.weight, b.weight, isAsc);
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'amount': return compare(a.amount, b.amount, isAsc);
-        case 'price': return compare(a.price, b.price, isAsc);
-        case 'total': return compare(a.price*a.amount, b.price*b.amount, isAsc);
-        default: return 0;
+        case 'id':
+          return compare(a.id, b.id, isAsc);
+        case 'weight':
+          return compare(a.weight, b.weight, isAsc);
+        case 'name':
+          return compare(a.name, b.name, isAsc);
+        case 'amount':
+          return compare(a.amount, b.amount, isAsc);
+        case 'price':
+          return compare(a.price, b.price, isAsc);
+        case 'total':
+          return compare(a.price * a.amount, b.price * b.amount, isAsc);
+        default:
+          return 0;
       }
     });
   }
@@ -185,17 +226,19 @@ export class PurchasesComponent implements OnInit {
       }
       this.Table_array.push({
         id: this.table_length,
-        name:   element,
+        name: element,
         weight: str_weight,
         amount: 0,
-        price:  str_price,
+        price: str_price,
       });
-      this.table_length+=1;
+      this.table_length += 1;
       this.sortedData = this.Table_array.slice();
       this.table.renderRows();
     }
 
-  string_format(num: number) {return num.toFixed(2);}
+    string_format(num: number) {
+      return num.toFixed(2);
+    }
 }
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {

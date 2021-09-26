@@ -33,7 +33,7 @@ import { InMemoryDataService } from './in-memory-data.service';
     AppComponent,
     PurchasesComponent,
     SalesComponent,
-    CreateComponent
+    CreateComponent,
   ],
   imports: [
     MatTableModule,
@@ -57,11 +57,11 @@ import { InMemoryDataService } from './in-memory-data.service';
     AppRoutingModule,
     HttpClientModule,
 
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    )
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      dataEncapsulation: false,
+    }),
   ],
   providers: [PurchasesComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
