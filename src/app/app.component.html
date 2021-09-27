@@ -1,40 +1,45 @@
 <mat-toolbar color="primary">
-  <div>
-    <img src="assets/laboratory icon.png" width="24" height="24" />
-  </div>
-  <div class="title">
-    <h2>شركة أدوية أمون</h2>
-  </div>
-  <div class="buttons">
-    <button
-      mat-button
-      (click)="page = 0"
-      *ngIf="page != 0"
-      routerLink="/purchases"
-    >
-      مشتريات
-    </button>
-    <button
-      mat-button
-      disabled
-      *ngIf="page == 0"
-      style="color: black; background-color: white"
-    >
-      مشتريات
-    </button>
+    <div>
+        <img src="assets/laboratory icon.png" width="24" height="24" />
+    </div>
+    <div class="title">
+        <h2>شركة أدوية أمون</h2>
+    </div>
+    <div class="buttons">
+        <button
+            mat-button
+            (click)="page = 0"
+            *ngIf="page != 0"
+            routerLink="/purchases"
+        >
+            مشتريات
+        </button>
+        <button
+            mat-button
+            disabled
+            *ngIf="page == 0"
+            style="color: black; background-color: white"
+        >
+            مشتريات
+        </button>
 
-    <button mat-button (click)="page = 1" *ngIf="page != 1" routerLink="/sales">
-      مبيعات
-    </button>
-    <button
-      mat-button
-      disabled
-      *ngIf="page == 1"
-      style="color: black; background-color: white"
-    >
-      مبيعات
-    </button>
-  </div>
+        <button
+            mat-button
+            (click)="page = 1"
+            *ngIf="page != 1"
+            routerLink="/sales"
+        >
+            مبيعات
+        </button>
+        <button
+            mat-button
+            disabled
+            *ngIf="page == 1"
+            style="color: black; background-color: white"
+        >
+            مبيعات
+        </button>
+    </div>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

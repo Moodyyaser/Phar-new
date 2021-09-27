@@ -1,4 +1,4 @@
-import { PeriodicElement, PharmaticElement } from './elements.model';
+import { PeriodicElement, PharmaticElement } from "./elements.model";
 
 export const ELEMENT_DATA: PeriodicElement[] = [];
 
