@@ -1,0 +1,19 @@
+<mat-card>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm">
+    <mat-form-field *ngIf="isLoading == false">
+      <input matInput name="email" ngModel type="email" placeholder="ادخل بريد إلكتروني" #emailInput="ngModel" required email>
+      <mat-error *ngIf="emailInput.invalid">من فضلك ادخل بريد الكتروني صحيح</mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="isLoading == false">
+      <input matInput name="password" ngModel type="password" placeholder="ادخل كلمة سر" #passwordInput="ngModel">
+      <mat-error *ngIf="passwordInput.invalid">من فضلك ادخل كلمة سر صحيح</mat-error>
+    </mat-form-field>
+    <p style="color:red" *ngIf="error_display">Error! email is already taken.</p>
+    <button
+     *ngIf="isLoading == false"
+      mat-raised-button
+      color="accent"
+      type="submit">Signup</button>
+  </form>
+  <mat-spinner *ngIf="isLoading == true" style="margin: auto;"></mat-spinner>
+</mat-card>

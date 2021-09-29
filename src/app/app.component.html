@@ -40,6 +40,23 @@
             مبيعات
         </button>
     </div>
+    <ul>
+        <li *ngIf="!userIsAuthenticated">
+            <a mat-button routerLink="/login" routerLinkActive="mat-accent"
+                >Login</a
+            >
+        </li>
+        <li *ngIf="!userIsAuthenticated">
+            <a mat-button routerLink="/signup" routerLinkActive="mat-accent"
+                >Signup</a
+            >
+        </li>
+        <li>
+            <button mat-button (click)="onLogout()" *ngIf="userIsAuthenticated">
+                Logout
+            </button>
+        </li>
+    </ul>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

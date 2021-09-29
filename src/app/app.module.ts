@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 //Materials
 import { MatButtonModule } from "@angular/material/button";
@@ -15,6 +16,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -24,16 +26,23 @@ import { AppRoutingModule } from "./app-routing.module";
 import { MatSortModule } from "@angular/material/sort";
 import { SalesComponent } from "./sales/sales.component";
 import { CreateComponent } from "./create/create.component";
-import { HttpClientModule } from "@angular/common/http";
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { InMemoryDataService } from "./in-memory-data.service";
+import { LoginComponent } from "./auth/login/login.component";
+import { SignupComponent } from "./auth/signup/signup.component";
+import { AuthInterceptor } from "./auth/auth-interceptor";
+import { ErrorInterceptor } from "./error-interseptor";
+import { ErrorComponent } from "./error/error.component";
 
 @NgModule({
     declarations: [
         AppComponent,
         PurchasesComponent,
         SalesComponent,
-        CreateComponent
+        CreateComponent,
+        LoginComponent,
+        SignupComponent,
+        ErrorComponent
     ],
     imports: [
         MatTableModule,
@@ -49,6 +58,7 @@ import { InMemoryDataService } from "./in-memory-data.service";
         MatPaginatorModule,
         MatDialogModule,
         MatDividerModule,
+        MatProgressSpinnerModule,
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
@@ -61,7 +71,11 @@ import { InMemoryDataService } from "./in-memory-data.service";
             dataEncapsulation: false
         })
     ],
-    providers: [PurchasesComponent],
+    providers: [
+        PurchasesComponent,
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
