@@ -17,6 +17,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -33,16 +34,22 @@ import { SignupComponent } from "./auth/signup/signup.component";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { ErrorInterceptor } from "./error-interseptor";
 import { ErrorComponent } from "./error/error.component";
+import { HeaderComponent } from "./header/header.component";
+import { PostCreateComponent } from "./posts/post-create/post-create.component";
+import { PostListComponent } from "./posts/post-list/post-list.component";
 
 @NgModule({
     declarations: [
         AppComponent,
         PurchasesComponent,
         SalesComponent,
+        HeaderComponent,
         CreateComponent,
         LoginComponent,
         SignupComponent,
-        ErrorComponent
+        ErrorComponent,
+        PostCreateComponent,
+        PostListComponent
     ],
     imports: [
         MatTableModule,
@@ -59,23 +66,21 @@ import { ErrorComponent } from "./error/error.component";
         MatDialogModule,
         MatDividerModule,
         MatProgressSpinnerModule,
+        MatExpansionModule,
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MatSortModule,
         BrowserModule,
         AppRoutingModule,
-        HttpClientModule,
-
-        HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
-            dataEncapsulation: false
-        })
+        HttpClientModule
     ],
     providers: [
         PurchasesComponent,
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [ErrorComponent]
 })
 export class AppModule {}
