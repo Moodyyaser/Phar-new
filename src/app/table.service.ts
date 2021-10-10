@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { ELEMENT_DATA } from "./elements.component";
 import { Observable, of } from "rxjs";
 import { PeriodicElement, PharmaticElement } from "./elements.model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
@@ -11,7 +10,7 @@ import { catchError, map, tap } from "rxjs/operators";
 export class TableService {
     constructor(private http: HttpClient) {}
 
-    private elementsUrl = "api/elements"; // URL to web api
+    private elementsUrl = "http://localhost:3000/api/posts"; // URL to web api
 
     getElements(): Observable<PeriodicElement[]> {
         return this.http.get<PeriodicElement[]>(this.elementsUrl);
@@ -21,14 +20,31 @@ export class TableService {
         headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
 
-    /** PUT: update the element on the server */
     updateElements(element: PeriodicElement): Observable<any> {
-        return this.http.put(this.elementsUrl, element, this.httpOptions).pipe(
-            tap(() => {
-                console.log(`updated table ${element.id}`);
-            }),
-            catchError(this.handleError<any>("updateTable"))
-        );
+      return this.http.put(this.elementsUrl, element, this.httpOptions).pipe(
+          tap(() => {
+              console.log(`updated table ${element.id}`);
+          }),
+          catchError(this.handleError<any>("updateTable"))
+      );
+    }
+
+    saveElements(name: string, weight: string, amount: string, price: string) {
+      // for (let i=0; i<element.length; i++) {
+      //   postData.append("name", element[i].name);
+      //   postData.append("weight", element[i].weight.toString());
+      //   postData.append("amount", element[i].amount.toString());
+      //   postData.append("price", element[i].price.toString());
+      // }
+      const postData = new FormData();
+      postData.append("name", name);
+      postData.append("weight", weight);
+      postData.append("amount", amount);
+      postData.append("price", price);
+      this.http.post<{ message: string; post: PeriodicElement }>(
+        "http://localhost:3000/api/posts",
+        postData
+      ).subscribe(() => console.log("saved"));
     }
 
     updateSales(element: PharmaticElement): Observable<any> {

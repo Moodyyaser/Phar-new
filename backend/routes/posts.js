@@ -1,64 +1,43 @@
 const express = require("express");
-const multer = require("multer");
 const Post = require("../models/post");
 const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
 
-const MIME_TYPE_MAP = {
-    "image/png": "png",
-    "image/jpeg": "jpg",
-    "image/jpg": "jpg"
-};
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const isValid = MIME_TYPE_MAP[file.mimetype];
-        let error = new Error("Invalid mime type");
-        if (isValid) error = "null";
-        cb(error, "backend/images");
-    },
-    filename: (req, file, cb) => {
-        console.log("tried here");
-        const name = file.originalname.toLowerCase().split(" ").join("-");
-        const ext = MIME_TYPE_MAP[file.mimetype];
-        cb(null, name + "-" + Date.now() + "." + ext);
-    }
-});
-
-var upload = multer({ storage: storage }).single("image");
-
 //Create post
-router.post("", checkAuth, upload, (req, res, next) => {
-    const url = req.protocol + "://" + req.get("host");
+router.post("", checkAuth, (req, res, next) => {
     const post = new Post({
-        title: req.body.title,
-        content: req.body.content,
-        imagePath: url + "/images/" + req.file.filename,
+        name: req.body.name,
+        weight: req.body.weight,
+        amount: req.body.amount,
+        price: req.body.price,
         creator: req.userData.userId
     });
+    //console.log(req.body.name)
     post.save()
         .then((createdPost) => {
             res.status(201).json({
                 message: "Post added successfully",
                 post: {
                     id: createdPost._id,
-                    title: createdPost.title,
-                    content: createdPost.content,
-                    imagePath: createdPost.imagePath,
+                    name: createdPost.name,
+                    weight: createdPost.weight,
+                    amount: createdPost.amount,
+                    price: createdPost.price,
                     creator: createdPost.creator
                 }
             });
         })
         .catch((error) => {
-            res.status(500).json({
-                message: "Couldn't create the post for some reason"
-            });
+          //console.log(error)
+            // res.status(500).json({
+            //     message: "Couldn't create the post for some reason"
+            // });
         });
 });
 
 //upload post
-router.put("/:id", checkAuth, upload, (req, res, next) => {
+router.put("/:id", checkAuth, (req, res, next) => {
     let imagePath = req.body.imagePath;
     if (req.file) {
         const url = req.protocol + "://" + req.get("host");
@@ -66,9 +45,10 @@ router.put("/:id", checkAuth, upload, (req, res, next) => {
     }
     const post = new Post({
         _id: req.body.id,
-        title: req.body.title,
-        content: req.body.content,
-        imagePath: imagePath,
+        name: req.body.name,
+        weight: req.body.weight,
+        amount: req.body.amount,
+        price: req.body.price,
         creator: req.userData.userId
     });
     //Edit post
@@ -83,7 +63,7 @@ router.put("/:id", checkAuth, upload, (req, res, next) => {
         });
 });
 
-//read post
+//read posts
 router.get("", (req, res, next) => {
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
@@ -106,7 +86,7 @@ router.get("", (req, res, next) => {
         });
 });
 
-//??????
+//read one post
 router.get("/:id", (req, res, next) => {
     Post.findById(req.params.id).then((post) => {
         if (post) {

@@ -1,4 +1,21 @@
 <mat-card style="margin: auto; margin-bottom: 2rem">
+  <div class="tooltip">
+    <mat-icon (click)="addCompany()">add</mat-icon>
+    <p class="tooltiptext">add company</p>
+  </div>
+  <div class="tooltip">
+    <mat-icon [matMenuTriggerFor]="dcompany_menu">delete</mat-icon>
+    <p class="tooltiptext">delete company</p>
+    <mat-menu #dcompany_menu="matMenu">
+        <button
+            mat-menu-item
+            *ngFor="let i of company_suppliers"
+            (click)="deleteCompany(i)"
+        >
+            {{ i }}
+        </button>
+    </mat-menu>
+  </div>
     <mat-form-field appearance="fill">
         <mat-label>اسم المورد</mat-label>
         <select
@@ -47,9 +64,7 @@
 <!-- Elements Table -->
 <div>
     <h2 style="margin-left: 1rem">Total: {{ getTotalCost() | currency }}</h2>
-    <h4 style="margin-left: 1rem">
-        Current supplier number: {{ import_number }}
-    </h4>
+    <h4 style="margin-left: 1rem">Current supplier number: {{ import_number }}</h4>
 </div>
 
 <button
@@ -63,7 +78,7 @@
 <button
     mat-raised-button
     color="accent"
-    style="margin-left: 1rem; margin-right: 1rem; float: right"
+    style="float: right"
     [matMenuTriggerFor]="element_menu"
 >
     Add element
@@ -74,10 +89,29 @@
         *ngFor="let i of items_to_add"
         (click)="addElement(i)"
     >
-        {{ i }}
+        {{ i.name }}
     </button>
 </mat-menu>
-<p *ngIf="saved" style="color: red" (click)="hide_saved()">Done</p>
+<div class="tooltip" style="float: right; margin-right: 1rem">
+  <mat-icon (click)="createElement()">create</mat-icon>
+  <p class="tooltiptext">create element</p>
+</div>
+<div class="tooltip" style="float: right; margin-right: 1rem">
+  <mat-icon [matMenuTriggerFor]="delement_menu">delete</mat-icon>
+  <p class="tooltiptext">delete element</p>
+  <mat-menu #delement_menu="matMenu">
+      <button
+          mat-menu-item
+          *ngFor="let i of items_to_add"
+          (click)="deleteElement(i)"
+      >
+          {{ i.name }}
+      </button>
+  </mat-menu>
+</div>
+<p *ngIf="saved==1" style="color: red" (click)="hide_saved()">Done</p>
+<p *ngIf="saved==2" style="color: red" (click)="hide_saved()">Error, no user logged in</p>
+<p *ngIf="saved==3" style="color: red" (click)="hide_saved()">Error, nothing to save</p>
 <table
     mat-table
     [dataSource]="sortedData"

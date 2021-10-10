@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 const postSchema = mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-    imagePath: { type: String, required: true },
+    name: { type: String, required: true },
+    weight: { type: Number, required: true },
+    amount: { type: Number, required: true },
+    price: { type: Number, required: true },
     creator: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

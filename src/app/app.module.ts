@@ -9,7 +9,10 @@ import { MatInputModule } from "@angular/material/input";
 import { MatCardModule } from "@angular/material/card";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatDialogModule } from "@angular/material/dialog";
+import {
+    MatDialogModule,
+    MAT_DIALOG_DEFAULT_OPTIONS
+} from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
@@ -26,17 +29,16 @@ import { AppRoutingModule } from "./app-routing.module";
 
 import { MatSortModule } from "@angular/material/sort";
 import { SalesComponent } from "./sales/sales.component";
-import { CreateComponent } from "./create/create.component";
-import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
-import { InMemoryDataService } from "./in-memory-data.service";
 import { LoginComponent } from "./auth/login/login.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { ErrorInterceptor } from "./error-interseptor";
 import { ErrorComponent } from "./error/error.component";
 import { HeaderComponent } from "./header/header.component";
-import { PostCreateComponent } from "./posts/post-create/post-create.component";
-import { PostListComponent } from "./posts/post-list/post-list.component";
+import { CreateElementDialog } from "./purchases/create-element-dialog";
+import { CreateCompanyDialog } from "./purchases/create-company-dialog";
+import { CreateBuyerDialog } from "./sales/create-buyer-dialog";
+import { CreateMedicineDialog } from "./sales/create-medicine-dialog";
 
 @NgModule({
     declarations: [
@@ -44,12 +46,13 @@ import { PostListComponent } from "./posts/post-list/post-list.component";
         PurchasesComponent,
         SalesComponent,
         HeaderComponent,
-        CreateComponent,
         LoginComponent,
         SignupComponent,
         ErrorComponent,
-        PostCreateComponent,
-        PostListComponent
+        CreateElementDialog,
+        CreateCompanyDialog,
+        CreateBuyerDialog,
+        CreateMedicineDialog,
     ],
     imports: [
         MatTableModule,
@@ -63,7 +66,6 @@ import { PostListComponent } from "./posts/post-list/post-list.component";
         MatDatepickerModule,
         MatNativeDateModule,
         MatPaginatorModule,
-        MatDialogModule,
         MatDividerModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
@@ -78,9 +80,14 @@ import { PostListComponent } from "./posts/post-list/post-list.component";
     providers: [
         PurchasesComponent,
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+        {
+            provide: MAT_DIALOG_DEFAULT_OPTIONS,
+            useValue: { hasBackdrop: false }
+        }
     ],
     bootstrap: [AppComponent],
-    entryComponents: [ErrorComponent]
+    entryComponents: [ErrorComponent, PurchasesComponent]
 })
 export class AppModule {}

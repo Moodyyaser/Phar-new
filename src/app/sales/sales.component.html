@@ -1,4 +1,21 @@
 <mat-card style="margin: auto; margin-bottom: 2rem">
+  <div class="tooltip">
+    <mat-icon (click)="addCompany()">add</mat-icon>
+    <p class="tooltiptext">add company</p>
+  </div>
+  <div class="tooltip">
+    <mat-icon [matMenuTriggerFor]="dcompany_menu">delete</mat-icon>
+    <p class="tooltiptext">delete company</p>
+    <mat-menu #dcompany_menu="matMenu">
+        <button
+            mat-menu-item
+            *ngFor="let i of company_buyers"
+            (click)="deleteCompany(i)"
+        >
+            {{ i }}
+        </button>
+    </mat-menu>
+  </div>
     <mat-form-field appearance="fill">
         <mat-label>اسم المصدر</mat-label>
         <select
@@ -44,7 +61,7 @@
     </button>
 </mat-card>
 
-<!-- Elements Table -->
+<!-- Medicines Table -->
 <div>
     <h2 style="margin-left: 1rem">Total: {{ getTotalCost() | currency }}</h2>
     <h4 style="margin-left: 1rem">Current buyer number: {{ export_number }}</h4>
@@ -70,12 +87,29 @@
     <button
         mat-menu-item
         *ngFor="let i of items_to_add"
-        (click)="addElement(i)"
+        (click)="addMedicine(i)"
     >
-        {{ i }}
+        {{ i.name }}
     </button>
 </mat-menu>
-<p *ngIf="saved" style="color: red" (click)="hide_saved()">Done</p>
+<div class="tooltip" style="float: right; margin-right: 1rem">
+  <mat-icon (click)="createMedicine()">create</mat-icon>
+  <p class="tooltiptext">create element</p>
+</div>
+<div class="tooltip" style="float: right; margin-right: 1rem">
+  <mat-icon [matMenuTriggerFor]="delement_menu">delete</mat-icon>
+  <p class="tooltiptext">delete element</p>
+  <mat-menu #delement_menu="matMenu">
+      <button
+          mat-menu-item
+          *ngFor="let i of items_to_add"
+          (click)="deleteMedicine(i)"
+      >
+          {{ i.name }}
+      </button>
+  </mat-menu>
+</div>
+<p *ngIf="saved==1" style="color: red" (click)="hide_saved()">Done</p>
 <table
     mat-table
     [dataSource]="sortedData"
