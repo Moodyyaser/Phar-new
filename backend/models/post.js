@@ -1,15 +1,18 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const postSchema = mongoose.Schema({
-    name: { type: String, required: true },
-    weight: { type: Number, required: true },
-    amount: { type: Number, required: true },
-    price: { type: Number, required: true },
-    creator: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    }
+  name: { type: String },
+  date: { type: Date },
+  index: { type: Number },
+  companies: { type: Array },
+  element_ename: { type: Array },
+  element_eweight: { type: Array },
+  element_eprice: { type: Array },
+  element_name: { type: Array },
+  element_weight: { type: Array },
+  element_amount: { type: Array },
+  element_price: { type: Array },
+  creator: { type: String, ref: "User", required: true}
 });
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model('Post', postSchema);

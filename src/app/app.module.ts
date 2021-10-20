@@ -35,10 +35,12 @@ import { AuthInterceptor } from "./auth/auth-interceptor";
 import { ErrorInterceptor } from "./error-interseptor";
 import { ErrorComponent } from "./error/error.component";
 import { HeaderComponent } from "./header/header.component";
-import { CreateElementDialog } from "./purchases/create-element-dialog";
-import { CreateCompanyDialog } from "./purchases/create-company-dialog";
+import { CreateElementDialog } from "./purchases/dialogs/create-element-dialog";
+import { CreateCompanyDialog } from "./purchases/dialogs/create-company-dialog";
 import { CreateBuyerDialog } from "./sales/create-buyer-dialog";
 import { CreateMedicineDialog } from "./sales/create-medicine-dialog";
+import { UploadPurchasesDialog } from "./purchases/dialogs/upload-purchases-dialog";
+import { DownloadPurchasesDialog } from "./purchases/dialogs/download-purchases-dialog";
 
 @NgModule({
     declarations: [
@@ -51,6 +53,8 @@ import { CreateMedicineDialog } from "./sales/create-medicine-dialog";
         ErrorComponent,
         CreateElementDialog,
         CreateCompanyDialog,
+        UploadPurchasesDialog,
+        DownloadPurchasesDialog,
         CreateBuyerDialog,
         CreateMedicineDialog,
     ],

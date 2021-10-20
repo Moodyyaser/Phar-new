@@ -3,12 +3,15 @@ import { Observable, of } from "rxjs";
 import { PeriodicElement, PharmaticElement } from "./elements.model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, map, tap } from "rxjs/operators";
+import { Router } from "@angular/router";
+
+import { Post } from "./post.model";
 
 @Injectable({
     providedIn: "root"
 })
 export class TableService {
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
 
     private elementsUrl = "http://localhost:3000/api/posts"; // URL to web api
 
@@ -29,22 +32,48 @@ export class TableService {
       );
     }
 
-    saveElements(name: string, weight: string, amount: string, price: string) {
-      // for (let i=0; i<element.length; i++) {
-      //   postData.append("name", element[i].name);
-      //   postData.append("weight", element[i].weight.toString());
-      //   postData.append("amount", element[i].amount.toString());
-      //   postData.append("price", element[i].price.toString());
-      // }
-      const postData = new FormData();
-      postData.append("name", name);
-      postData.append("weight", weight);
-      postData.append("amount", amount);
-      postData.append("price", price);
-      this.http.post<{ message: string; post: PeriodicElement }>(
+    addPost(te: number, length: number, date: Date, name: string, companies: any, elements: any, table_array: any) {
+      //Pack all created elements in an array
+      var element_ename = [];
+      var element_eweight = [];
+      var element_eprice = [];
+      for (let i = 0; i < elements.length; i += 1) {
+        element_ename.push(elements[i].name);
+        element_eweight.push(elements[i].weight);
+        element_eprice.push(elements[i].price);
+      }
+
+      //Pack all table elements in an array
+      var element_name = [];
+      var element_weight = [];
+      var element_amount = [];
+      var element_price = [];
+      for (let i = 0; i < table_array.length; i += 1) {
+        element_name  .push(table_array[i].name);
+        element_weight.push(table_array[i].weight);
+        element_amount.push(table_array[i].amount);
+        element_price .push(table_array[i].price);
+      }
+
+      let postData = {
+        te: te,
+        length: length,
+        date: date,
+        name: name,
+        companies: companies,
+        element_ename:   element_ename,
+        element_eweight: element_eweight,
+        element_eprice:  element_eprice,
+        element_name  : element_name,
+        element_weight: element_weight,
+        element_amount: element_amount,
+        element_price : element_price,
+      };
+
+      this.http.post<{ message: string; }>(
         "http://localhost:3000/api/posts",
         postData
-      ).subscribe(() => console.log("saved"));
+      ).subscribe(() => console.log("Uploaded successfully"));
     }
 
     updateSales(element: PharmaticElement): Observable<any> {
@@ -66,5 +95,9 @@ export class TableService {
             // Let the app keep running by returning an empty result.
             return of(result as T);
         };
+    }
+    deletePost(postId: string){
+      console.log("deletePost");
+      return this.http.delete("http://localhost:3000/api/posts/" + postId);
     }
 }

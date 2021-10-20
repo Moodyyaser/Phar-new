@@ -21,6 +21,7 @@ export class SalesComponent implements OnInit {
   table_length_prev    = 0;
   company_length_prev  = 0;
   medicine_length_prev = 0;
+  loading = true;
 
   constructor(private tableService: TableService, public dialog: MatDialog, private http: HttpClient) {
       this.sortedData = this.Table_array.slice();

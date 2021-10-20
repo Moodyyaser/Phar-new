@@ -1,4 +1,4 @@
-<mat-card style="margin: auto; margin-bottom: 2rem">
+<mat-card style="margin: auto; margin-bottom: 2rem" *ngIf="loading==false">
   <div class="tooltip">
     <mat-icon (click)="addCompany()">add</mat-icon>
     <p class="tooltiptext">add company</p>
@@ -62,7 +62,7 @@
 </mat-card>
 
 <!-- Elements Table -->
-<div>
+<div *ngIf="loading==false">
     <h2 style="margin-left: 1rem">Total: {{ getTotalCost() | currency }}</h2>
     <h4 style="margin-left: 1rem">Current supplier number: {{ import_number }}</h4>
 </div>
@@ -71,6 +71,7 @@
     mat-raised-button
     color="accent"
     style="margin-left: 1rem"
+    *ngIf="loading==false"
     (click)="save()"
 >
     Save
@@ -79,6 +80,7 @@
     mat-raised-button
     color="accent"
     style="float: right"
+    *ngIf="loading==false"
     [matMenuTriggerFor]="element_menu"
 >
     Add element
@@ -92,11 +94,11 @@
         {{ i.name }}
     </button>
 </mat-menu>
-<div class="tooltip" style="float: right; margin-right: 1rem">
+<div class="tooltip" style="float: right; margin-right: 1rem" *ngIf="loading==false">
   <mat-icon (click)="createElement()">create</mat-icon>
   <p class="tooltiptext">create element</p>
 </div>
-<div class="tooltip" style="float: right; margin-right: 1rem">
+<div class="tooltip" style="float: right; margin-right: 1rem" *ngIf="loading==false">
   <mat-icon [matMenuTriggerFor]="delement_menu">delete</mat-icon>
   <p class="tooltiptext">delete element</p>
   <mat-menu #delement_menu="matMenu">
@@ -109,10 +111,10 @@
       </button>
   </mat-menu>
 </div>
-<p *ngIf="saved==1" style="color: red" (click)="hide_saved()">Done</p>
-<p *ngIf="saved==2" style="color: red" (click)="hide_saved()">Error, no user logged in</p>
-<p *ngIf="saved==3" style="color: red" (click)="hide_saved()">Error, nothing to save</p>
-<table
+<p *ngIf="saved==1 && loading==false" style="color: red" (click)="hide_saved()">Done</p>
+<p *ngIf="saved==2 && loading==false" style="color: red" (click)="hide_saved()">Error, no user logged in</p>
+<p *ngIf="saved==3 && loading==false" style="color: red" (click)="hide_saved()">Error, nothing to save</p>
+<table *ngIf="loading==false"
     mat-table
     [dataSource]="sortedData"
     matSort
@@ -193,3 +195,5 @@
                  showFirstLastButtons
                  aria-label="Select page of periodic elements">
   </mat-paginator> -->
+
+<mat-spinner *ngIf="loading==true" style="margin: auto;"></mat-spinner>

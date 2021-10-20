@@ -92,7 +92,7 @@ export class AuthService {
       this.token = "undefined";
       this.isAuthenticated = false;
       this.authStatusListener.next(false);
-      this.router.navigate(["/"]);
+      this.router.navigate(["/login"]);
       this.userId = "null";
       clearTimeout(this.tokenTimer);
     }
