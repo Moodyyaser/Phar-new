@@ -12,7 +12,7 @@ const postSchema = mongoose.Schema({
   element_weight: { type: Array },
   element_amount: { type: Array },
   element_price: { type: Array },
-  creator: { type: String, ref: "User", required: true}
+  creator: { type: String, ref: 'User', required: true },
 });
 
 module.exports = mongoose.model('Post', postSchema);
