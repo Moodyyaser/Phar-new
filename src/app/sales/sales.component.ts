@@ -40,7 +40,7 @@ export class SalesComponent implements OnInit {
   //Date format in Javascript is yyyy\dd\mm but will be displayed as mm/dd/yyyy
   //Highlighted date is today's date
   date_index: Date = new Date();
-  buyer_index = "";
+  buyer_index = '';
 
   //Table medicines --------------------------------------------------------------------
   ELEMENT_DATA: PharmaticElement[] = [];
