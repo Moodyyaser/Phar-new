@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { Post } from './post.model';
+import { environment } from './../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ import { Post } from './post.model';
 export class TableService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  private elementsUrl = `${process.env.API_BASE_URL}/api/posts`; // URL to web api
+  private elementsUrl = environment.API_BASE_URL+"/api/posts"; // URL to web api
 
   getElements(): Observable<PeriodicElement[]> {
     return this.http.get<PeriodicElement[]>(this.elementsUrl);
@@ -79,7 +80,7 @@ export class TableService {
     };
 
     this.http
-      .post<{ message: string }>(`${process.env.API_BASE_URL}/api/posts`, postData)
+      .post<{ message: string }>(environment.API_BASE_URL+"/api/posts", postData)
       .subscribe(() => console.log('Uploaded successfully'));
   }
 
@@ -105,6 +106,6 @@ export class TableService {
   }
   deletePost(postId: string) {
     console.log('deletePost');
-    return this.http.delete(`${process.env.API_BASE_URL}/api/posts` + postId);
+    return this.http.delete(environment.API_BASE_URL+"/api/posts" + postId);
   }
 }

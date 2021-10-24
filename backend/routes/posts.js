@@ -37,32 +37,6 @@ router.post('', checkAuth, (req, res, next) => {
     });
 });
 
-//upload post
-router.put('/:id', checkAuth, (req, res, next) => {
-  let imagePath = req.body.imagePath;
-  if (req.file) {
-    const url = req.protocol + '://' + req.get('host');
-    imagePath = url + '/images/' + req.file.filename;
-  }
-  const post = new Post({
-    _id: req.body.id,
-    name: req.body.name,
-    weight: req.body.weight,
-    amount: req.body.amount,
-    price: req.body.price,
-    creator: req.userData.userId,
-  });
-  //Edit post
-  Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
-    .then((result) => {
-      if (result.modifiedCount > 0) res.status(200).json({ message: 'Updated successfully! :D' });
-      else res.status(401).json({ message: "This isn't yours to edit" });
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Couldn't update....  why?" });
-    });
-});
-
 //read posts
 router.get('', (req, res, next) => {
   Post.find()

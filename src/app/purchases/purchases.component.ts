@@ -11,6 +11,7 @@ import { CreateElementDialog } from './dialogs/create-element-dialog';
 import { CreateCompanyDialog } from './dialogs/create-company-dialog';
 import { UploadPurchasesDialog } from './dialogs/upload-purchases-dialog';
 import { DownloadPurchasesDialog } from './dialogs/download-purchases-dialog';
+import { environment } from './../../environments/environment';
 
 @Component({
   selector: 'app-purchases',
@@ -248,7 +249,7 @@ export class PurchasesComponent implements OnInit {
           const search_query = '?creator=' + userId + '&index=' + this.load_number;
           this.http
             .get<{ message: string; posts: any }>(
-              `${process.env.API_BASE_URL}/api/posts` + search_query,
+              environment.API_BASE_URL+"/api/posts" + search_query,
             )
             .subscribe((PostData) => {
               let fetched_post = PostData.posts;
@@ -259,7 +260,7 @@ export class PurchasesComponent implements OnInit {
                 console.log("couldn't find a post to remove");
                 //Upload
                 this.http
-                  .post<{ message: string }>(`${process.env.API_BASE_URL}/api/posts`, postData)
+                  .post<{ message: string }>(environment.API_BASE_URL+"/api/posts", postData)
                   .subscribe(() => {
                     this.saved = 1;
                     console.log('Uploaded successfully');
@@ -270,7 +271,7 @@ export class PurchasesComponent implements OnInit {
                   console.log('deleted previous data');
                   //Upload
                   this.http
-                    .post<{ message: string }>(`${process.env.API_BASE_URL}/api/posts`, postData)
+                    .post<{ message: string }>(environment.API_BASE_URL+"/api/posts", postData)
                     .subscribe(() => {
                       this.saved = 1;
                       console.log('Uploaded successfully');
@@ -369,7 +370,7 @@ export class PurchasesComponent implements OnInit {
           const search_query = '?creator=' + userId + '&index=' + this.load_number;
           this.http
             .get<{ message: string; posts: any }>(
-              `${process.env.API_BASE_URL}/api/posts` + search_query,
+              environment.API_BASE_URL+"/api/posts" + search_query,
             )
             .subscribe((PostData) => {
               let fetched_post = PostData.posts;
