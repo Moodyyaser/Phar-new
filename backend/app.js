@@ -11,7 +11,8 @@ require('dotenv').config();
 
 //Connect to mongoose
 mongoose
-  .connect("mongodb+srv://max:1tzPJy6TXyeVyLSs@cluster0.kdtdt.mongodb.net/medicine-company") //If this string becomes `${process.env.DB_CONNECTION_STRING}`, you won't be able to login or signup ever.
+  .connect("mongodb+srv://max:1tzPJy6TXyeVyLSs@cluster0.kdtdt.mongodb.net/medicine-company")
+  //If the string above becomes `${process.env.DB_CONNECTION_STRING}`, you won't be able to login or signup ever.
   .then(() => {
     console.log('Connected to database!');
   })
