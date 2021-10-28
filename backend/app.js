@@ -14,6 +14,7 @@ mongoose
   .connect(`${process.env.DB_CONNECTION_STRING}`)
   // the .env file should be in the root project directory, you will find an example.env file there as an example
   .then(() => {
+    console.log(`${process.env.DB_CONNECTION_STRING}`);
     console.log('Connected to database!');
   })
   .catch(() => {
